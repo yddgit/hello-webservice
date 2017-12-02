@@ -1,0 +1,129 @@
+WebService
+
+Java原生提供的JAX-WS(Java API XML WebService)
+
+1.服务端
+
+  - 创建接口
+    SEI(Service Endpoint Interface) @WebService
+	在接口方法上使用@WebResult(name = 'xxx')指定返回值名称
+	在方法参数上使用@WebParam(name = 'xxx')指定参数名
+
+  - 创建实现类
+    SIB(Service Implementation Bean) @WebService(endpointInterface = "com.my.project.jaxws.IMyService")
+
+  - 开启服务
+    String address = "http://localhost:9000/myService";
+    Endpoint.publish(address, new MyServiceImpl());
+
+2.客户端
+
+  - 代码示例
+    URL wsdlLocation = new URL("http://localhost:9000/myService?wsdl");
+    //从WSDL命名空间定义属性中确定: new QName(targetNamespace, name)
+    QName serviceName = new QName("http://jaxws.project.my.com/", "MyServiceImplService");
+    Service service = Service.create(wsdlLocation, serviceName);
+    IMyService my = service.getPort(IMyService.class);
+
+  - 使用JDK提供的wsimport命令生成客户端源代码
+    -d 指定生成文件的目录
+    -keep 指定生成源文件
+    -verbose 输出详细信息
+    -p 指定生成文件的包名, 不指定则使用wsdl中定义
+	-Xnocompile 不编译生成的源码文件
+    -最后指定wsdl地址
+    wsimport -d . -p com.my.project.jaxws.wsimport -keep -verbose -Xnocompile http://localhost:9000/myService?wsdl
+
+3.WSDL文件的组成
+
+  - types 访问类型定义，对应到一个xsd文件，每个类型都会对应一个对象
+    <types>
+      <xsd:schema>
+        <xsd:import namespace="http://jaxws.project.my.com/" schemaLocation="http://localhost:9000/myService?xsd=1"/>
+      </xsd:schema>
+    </types> 
+
+  - message SOAP消息定义(Simple Object Access Protocol)
+    <message name="add"><!-- 方法请求消息 -->
+      <part name="parameters" element="tns:add"/>
+    </message>
+    <message name="addResponse"><!-- 方法返回消息 -->
+      <part name="parameters" element="tns:addResponse"/>
+    </message>
+    <message name="minus"><!-- 方法请求消息 -->
+      <part name="parameters" element="tns:minus"/>
+    </message>
+    <message name="minusResponse"><!-- 方法返回消息 -->
+      <part name="parameters" element="tns:minusResponse"/>
+    </message>
+
+  - portType 指定服务接口
+
+    <portType name="IMyService">
+      <operation name="add"><!-- operation节点对应方法 -->
+	    <!-- input节点对应请求参数 -->
+        <input wsam:Action="http://jaxws.project.my.com/IMyService/addRequest" message="tns:add"/>
+		<!-- output节点对应返回值 -->
+        <output wsam:Action="http://jaxws.project.my.com/IMyService/addResponse" message="tns:addResponse"/>
+      </operation>
+      <operation name="minus">
+        <input wsam:Action="http://jaxws.project.my.com/IMyService/minusRequest" message="tns:minus"/>
+        <output wsam:Action="http://jaxws.project.my.com/IMyService/minusResponse" message="tns:minusResponse"/>
+      </operation>
+    </portType>
+
+  - banding 指定消息传输格式
+
+    <binding name="MyServiceImplPortBinding" type="tns:IMyService">
+	  <!-- style可选值: document/rpc -->
+      <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+      <operation name="add">
+        <soap:operation soapAction=""/>
+        <input>
+		  <!-- use可选值: literal(以xml格式传输)/encode(RMI, SOAPMessage encode格式) -->
+          <soap:body use="literal"/>
+        </input>
+        <output>
+          <soap:body use="literal"/>
+        </output>
+      </operation>
+      <operation name="minus">
+        <soap:operation soapAction=""/>
+        <input>
+          <soap:body use="literal"/>
+        </input>
+        <output>
+          <soap:body use="literal"/>
+        </output>
+      </operation>
+    </binding>
+
+  - service 指定服务基本信息
+
+    <service name="MyServiceImplService">
+      <port name="MyServiceImplPort" binding="tns:MyServiceImplPortBinding">
+        <soap:address location="http://localhost:9000/myService"/>
+      </port>
+    </service>
+
+4.WebService接口测试
+
+  - 使用Eclipse执行webservice方法:
+    - 切换到JavaEE视图
+    - 在工具栏打开Web Services Explorer
+    - 在右上解点击 WSDL Page 按钮
+    - 输入WSDL地址开始测试WebService接口
+
+  - 使用TCPMon工具: http://ws.apache.org/tcpmon/
+    - 指定TCPMon监听端口: 9001
+	- 设置TCPMon将监听端口数据转发到WebService对应的地址和商品: 9000
+	- 添加Listener
+	- 修改调用WebService的代码, 将address的端口改为TCPMon的监听端口
+	- 即可在请求过程中截获WebService报文
+
+5.服务类型:
+
+  - 基于实体的服务(基本的数据发布)，如：查询用户基本信息
+  - 基于功能的服务(基本功能的发布)，如：天气预报服务
+  - 基于流程的服务(业务流程)，如：不同独立系统之间的业务流程
+
