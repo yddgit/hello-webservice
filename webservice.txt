@@ -270,3 +270,8 @@ XML相关基础
     -最后指定xsd文件的路径
     xjc -d src/main/java -p com.my.project.jaxws.xjc -encoding UTF-8 -verbose src/main/resources/schema/xjc/class.xsd
 
+3.Java中处理XML的API
+
+  - 使用JAXB对Java对象和XML进行互相转换
+  - 使用Stax处理XML(遍历/查找/XPath/XMLStreamWriter/Transformer)
+
