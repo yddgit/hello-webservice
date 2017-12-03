@@ -265,7 +265,7 @@ XML相关基础
   - 使用JDK提供的xjc命令通过schema文件生成对应的Java类
     -d 指定生成文件的目录
     -p 指定生成文件的包名
-	-encoding 指定生成源码的文件编码
+    -encoding 指定生成源码的文件编码
     -verbose 输出详细信息
     -最后指定xsd文件的路径
     xjc -d src/main/java -p com.my.project.jaxws.xjc -encoding UTF-8 -verbose src/main/resources/schema/xjc/class.xsd
@@ -274,4 +274,21 @@ XML相关基础
 
   - 使用JAXB对Java对象和XML进行互相转换
   - 使用Stax处理XML(遍历/查找/XPath/XMLStreamWriter/Transformer)
+
+SOAP相关基础
+
+1.SOAP消息的组成
+
+  SOAPMessage
+  +--SOAPPart
+  |  +--SOAPEnvelope
+  |     +--SOAPHeader(optional): Headers(if any)
+  |     +--SOAPBody: XML Content or SOAPFault
+  +--AttachmentPart
+  |  +--MIME Headers
+  |  +--Content: XML or non-XML
+  +--AttachmentPart
+  |  +--MIME Headers
+  |  +--Content: XML or non-XML
+  \--More AttachmentPart ...
 
