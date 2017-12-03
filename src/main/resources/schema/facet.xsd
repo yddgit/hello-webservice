@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.example.org/facet"
+	xmlns:tns="http://www.example.org/facet"
+	elementFormDefault="qualified">
+
+	<element name="person" type="tns:personType"/>
+
+	<complexType name="personType">
+		<sequence>
+			<element name="name" type="string"/>
+			<element name="age" type="tns:ageType"/>
+			<element name="email" type="tns:emailType"/>
+		</sequence>
+		<attribute name="gender" type="tns:genderType" use="required"/>
+	</complexType>
+
+	<!-- age类型 -->
+	<simpleType name="ageType">
+		<restriction base="int">
+			<minInclusive value="0"/>
+			<maxExclusive value="150"/>
+		</restriction>
+	</simpleType>
+
+	<!-- gender类型 -->
+	<simpleType name="genderType">
+		<restriction base="string">
+			<enumeration value="male"/>
+			<enumeration value="female"/>
+		</restriction>
+	</simpleType>
+
+	<!-- email类型 -->
+	<simpleType name="emailType">
+		<restriction base="string">
+			<pattern value="(\w+\.*)*\w+@\w+(\.[A-Za-z]+)+"/>
+			<minLength value="6"/>
+			<maxLength value="255"/>
+		</restriction>
+	</simpleType>
+
+</schema>

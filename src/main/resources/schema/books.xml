@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books xmlns="http://www.example.org/books"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.example.org/books http://www.example.org/books">
+	<book id="01">
+		<title>Java</title>
+		<content>Java Program</content>
+		<author>Java</author>
+	</book>
+	<book id="02">
+		<title>Python</title>
+		<content>Python Program</content>
+		<authors>
+			<author>Python1</author>
+			<author>Python2</author>
+		</authors>
+	</book>
+</books>

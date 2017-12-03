@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<user xmlns="http://www.example.org/schema01"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.example.org/schema01 http://www.example.org/schema01">
+	<id>01</id>
+	<username>test1</username>
+	<birth>2001-10-21</birth>
+</user>

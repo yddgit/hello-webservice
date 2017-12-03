@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.example.org/class"
+	xmlns:tns="http://www.example.org/class"
+	elementFormDefault="qualified">
+
+	<xs:element name="student" type="tns:studentType"/>
+
+	<xs:complexType name="studentType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="gender" type="tns:genderType"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- gender类型 -->
+	<xs:simpleType name="genderType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="male"/>
+			<xs:enumeration value="female"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>
