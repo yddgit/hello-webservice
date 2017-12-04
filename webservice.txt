@@ -323,3 +323,53 @@ SOAP相关基础
       - 在服务实现类MyServiceImpl上增加@HandlerChain(file = "handler-chain-server.xml")
       - 重启服务Handler即可生效
 
+4.SOAPBinding
+
+  在服务定义的接口上添加注解@SOAPBinding(style = Style.XXX)
+  - 默认的style = Style.DOCUMENT
+  - style = Style.DOCUMENT, 参数会被包装, 可以对特定参数值做约定和限制
+  - style = Style.RPC, 参数将直接传递不再包装, 缺点是不能对参数值做约定和限制
+  - 可以对比两种方式对应的WSDL文件和xsd类型定义文件的区别
+
+契约优先的编码方式
+
+1.开发流程
+
+  - 编写schema或wsdl文件
+    - 在src目录下新建META-INF目录, 通常将wsdl文件放置在这个目录下
+    - New --> Other... -->  Web Services --> WSDL File
+    - 输入文件名myService, [Protocol]选择[SOAP], [SOAP Binding Options]选择[document literal]
+    - 点击Finish, 编写WSDL文件内容
+  - 根据WSDL文件生成客户端代码
+    - wsimport -d . -p com.my.project.sample.wsimport -keep -verbose -Xnocompile META-INF/wsdl/myService.wsdl
+    - 删除接口定义以外的其他代码
+  - 编写实现类(在实现类上指定endpointInterface/wsdlLocation/serviceName)
+  - 发布服务
+  - 生成客户端代码调用服务
+    wsimport -d . -p com.my.project.sample.client -keep -verbose -Xnocompile http://localhost:9000/myService?wsdl
+  - 总结:
+    - 服务端基于WSDL文件生成接口定义, 只需编写接口实现类即可完成开发
+    - 服务端的接口定义其实也不是必须的(保留它主要是为了使用接口方法上生成注解)
+    - 客户端基于WSDL文件生成调用代码, 即可直接调用服务
+
+2.添加隐式头信息的流程
+
+  - 修改WSDL文件
+    types:
+      <xsd:element name="license" type="xsd:string"/>
+    messages:
+      <wsdl:message name="license" >
+        <wsdl:part element="tns:license" name="license"/>
+      </wsdl:message>
+    binding/operation/input:
+      <soap:header use="literal" part="license" message="tns:license"/>
+    注意: 以上修改不影响wsimport命令生成的代码内容
+  - 直接修改服务端接口定义, 在对应的请求方法中添加参数, 并指定:
+    @WebParam(name="license", header=true)
+    修改接口实现类, 增加相应的头信息验证逻辑
+  - 客户端无需重新生成代码, 即使重新生成代码内容也不会变化
+    客户端发送头信息的方式有三种:
+    - 使用Handler
+    - 直接创建SOAPMessage, 组装Header信息
+    - 使用代理类
+
