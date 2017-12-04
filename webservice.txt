@@ -116,10 +116,15 @@ Java原生提供的JAX-WS(Java API XML WebService)
 
   - 使用TCPMon工具: http://ws.apache.org/tcpmon/
     - 指定TCPMon监听端口: 9001
-    - 设置TCPMon将监听端口数据转发到WebService对应的地址和商品: 9000
+    - 设置TCPMon将监听端口数据转发到WebService对应的地址和端口: 9000
     - 添加Listener
     - 修改调用WebService的代码, 将address的端口改为TCPMon的监听端口
     - 即可在请求过程中截获WebService报文
+    - 也可使用Eclipse自带的TCP/IP monitor
+      - Preferences --> Run/Debug --> TCP/IP monitor
+      - 点击Add按钮, 输入本地端口和要监听的地址端口
+      - Type选择: TCP/IP
+      - 点击OK, 然后选中添加的监听记录, 点击Start按钮
 
 5.服务类型:
 
@@ -291,4 +296,30 @@ SOAP相关基础
   |  +--MIME Headers
   |  +--Content: XML or non-XML
   \--More AttachmentPart ...
+
+2.SOAP消息的发送SAAJ
+
+  基于Message的方式发送
+  基于Payload的方式发送
+
+3.SOAPHeader/SOAPFault的处理
+
+  - 接口声明的异常类型会被抛到客户端，如果有未声明的异常抛出则不会被抛到客户端
+  - 显式的Header声明导致客户端调用非常不便: @WebParam(name="xxx", header=true), 推荐使用Handler
+  - 通过Handler处理SOAP消息:
+    - LogicHandler: 只能获取SOAPBody信息
+    - SOAPHandler: 可以获取SOAPMessage信息
+    - 可以指定各个Handler的执行顺序
+    - 对于客户端: 总是先执行所有的LogicHandler, 再执行所有的SOAPHandler
+      - 创建Handler类实现SOAPHandler<SOAPMessageContext>
+      - 实现handleMessage方法
+      - 编写handler配置文件handler-chain-client.xml
+      - 在客户端生成的服务类MyServiceImplService上增加@HandlerChain(file = "handler-chain-client.xml")
+      - 重新调用服务Handler即可生效
+    - 对于服务端: 总是先执行所有的SOAPHandler, 再执行所有的LogicHandler
+      - 创建Handler类实现SOAPHandler<SOAPMessageContext>
+      - 实现handleMessage方法
+      - 编写handler配置文件handler-chain-server.xml
+      - 在服务实现类MyServiceImpl上增加@HandlerChain(file = "handler-chain-server.xml")
+      - 重启服务Handler即可生效
 
