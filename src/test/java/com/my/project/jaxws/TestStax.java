@@ -34,6 +34,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -45,25 +47,11 @@ public class TestStax {
 	/** XMLStreamConstants中的常量值到常量名的映射 */
 	private static Map<Integer, String> CONST_TO_NAME;
 
-	public static void main(String[] args) {
-		// 基于光标模型的操作
-		stream();
-		// 基于迭代模型的操作
-		event();
-		// 基于过滤器的操作
-		filter();
-		// 基于XPath的操作
-		xpath();
-		// 使用XMLStreamWriter创建XML
-		writer();
-		// 使用Transformer更新节点信息
-		update();
-	}
-
 	/**
 	 * 基于光标模型的操作
 	 */
-	static void stream() {
+	@Test
+	public void stream() {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		InputStream is = null;
 		try {
@@ -101,7 +89,8 @@ public class TestStax {
 	/**
 	 * 基于迭代模型的操作
 	 */
-	static void event() {
+	@Test
+	public void event() {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		InputStream is = null;
 		try {
@@ -143,7 +132,8 @@ public class TestStax {
 	/**
 	 * 基于过滤器的操作
 	 */
-	static void filter() {
+	@Test
+	public void filter() {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		InputStream is = null;
 		try {
@@ -199,7 +189,8 @@ public class TestStax {
 	/**
 	 * 基于XPath的操作（查找category="web"的book节点，输出title和price信息）
 	 */
-	static void xpath() {
+	@Test
+	public void xpath() {
 		InputStream is = null;
 		try {
 			is = TestStax.class.getClassLoader().getResourceAsStream("books.xml");
@@ -238,7 +229,8 @@ public class TestStax {
 	/**
 	 * 使用XMLStreamWriter创建XML
 	 */
-	static void writer() {
+	@Test
+	public void writer() {
 		try {
 			XMLOutputFactory factory = XMLOutputFactory.newInstance();
 			// 设置输出的XML内容中添加命名空间
@@ -273,7 +265,8 @@ public class TestStax {
 	/**
 	 * 使用Transformer更新节点信息
 	 */
-	static void update() {
+	@Test
+	public void update() {
 		InputStream is = null;
 		try {
 			is = TestStax.class.getClassLoader().getResourceAsStream("books.xml");
@@ -322,7 +315,8 @@ public class TestStax {
 	/**
 	 * 将XMLStreamConstants中的常量添加到Map中，方便查看输出
 	 */
-	static {
+	@Before
+	public void before() {
 		try {
 			Class<?> clazz = Class.forName("javax.xml.stream.XMLStreamConstants");
 			Field[] fields = clazz.getDeclaredFields();

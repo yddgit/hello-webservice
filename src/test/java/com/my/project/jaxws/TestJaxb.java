@@ -7,6 +7,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.junit.Test;
+
 import com.my.project.jaxws.model.Classroom;
 import com.my.project.jaxws.model.Student;
 
@@ -16,15 +18,11 @@ import com.my.project.jaxws.model.Student;
  */
 public class TestJaxb {
 
-	public static void main(String[] args) {
-		marshaller();
-		unmarshaller();
-	}
-
 	/**
 	 * 将Java对象转换为XML
 	 */
-	static void marshaller() {
+	@Test
+	public void marshaller() {
 		try {
 			JAXBContext ctx = JAXBContext.newInstance(Student.class);
 			Marshaller marshaller = ctx.createMarshaller();
@@ -50,7 +48,8 @@ public class TestJaxb {
 	/**
 	 * 将XML转换为Java对象
 	 */
-	static void unmarshaller() {
+	@Test
+	public void unmarshaller() {
 		try {
 			JAXBContext ctx = JAXBContext.newInstance(Student.class);
 			Unmarshaller unmarshaller = ctx.createUnmarshaller();
