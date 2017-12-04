@@ -3,6 +3,8 @@ package com.my.project.jaxws;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+import javax.jws.soap.SOAPBinding.Style;
 
 import com.my.project.jaxws.model.User;
 
@@ -11,6 +13,8 @@ import com.my.project.jaxws.model.User;
  * @author yang
  */
 @WebService
+@SOAPBinding(style = Style.DOCUMENT)
+//@SOAPBinding(style = Style.RPC)
 public interface IMyService {
 	/** 两数相加 */
 	@WebResult(name = "addResult")
