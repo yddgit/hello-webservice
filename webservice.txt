@@ -621,3 +621,26 @@ SOAP相关基础
     SOAPBinding binding = (SOAPBinding) bindingProvider.getBinding();
     binding.setMTOMEnabled(true);
 
+Spring整合WebService
+
+  集成WebService服务端
+  参考: https://docs.spring.io/spring/docs/4.3.13.RELEASE/spring-framework-reference/htmlsingle/#remoting-web-services
+  - Exposing servlet-based web services using JAX-WS
+  - Exporting standalone web services using JAX-WS
+  - Exporting web services using the JAX-WS RI’s Spring support
+
+  集成WebService客户端
+  参考: https://docs.spring.io/spring/docs/4.3.13.RELEASE/spring-framework-reference/htmlsingle/#remoting-web-services-jaxws-access
+  - Accessing web services using JAX-WS
+  - 为JaxWsPortProxyFactoryBean添加handlerRosover解析SOAPHeader
+
+  服务端在WebService实现类中获取HttpServletRequest
+  - 注入WebServiceContext
+    @Resource
+    private WebServiceContext context;
+  - 获取HttpServletRequest
+    MessageContext ctx = context.getMessageContext();
+    HttpServletRequest request = (HttpServletRequest) ctx.get(SOAPMessageContext.SERVLET_REQUEST);
+
+  客户端在Handler中获取验证信息可以使用ThreadLocal变量
+
