@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.example.org/slice"
+	xmlns:tns="http://www.example.org/slice"
+	elementFormDefault="qualified">
+
+	<element name="title" type="string"/>
+	<element name="content" type="string"/>
+	<element name="author" type="string"/>
+
+	<element name="authors">
+		<complexType>
+			<sequence minOccurs="2" maxOccurs="5">
+				<element ref="tns:author"/>
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="book">
+		<complexType>
+			<sequence minOccurs="1" maxOccurs="1">
+				<element ref="tns:title"/>
+				<element ref="tns:content"/>
+				<choice>
+					<element ref="tns:author"/>
+					<element ref="tns:authors"/>
+				</choice>
+			</sequence>
+			<attribute name="id" type="int" use="required"/>
+		</complexType>
+	</element>
+
+	<element name="books">
+		<complexType>
+			<!-- minOccurs最少出现次数(默认1) -->
+			<!-- maxOccurs最多出现次数(默认1) -->
+			<sequence minOccurs="0" maxOccurs="unbounded">
+				<element ref="tns:book"/>
+			</sequence>
+		</complexType>
+	</element>
+
+</schema>

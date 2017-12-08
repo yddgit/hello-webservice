@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE class SYSTEM "class.dtd">
+<class id="c1">
+	<name>CS1</name>
+	<grade>2018</grade>
+	<students>
+		<student id="s1">
+			<name>Jack</name>
+			<birth>1980-03-12</birth>
+		</student>
+		<student id="s2">
+			<name>Tom</name>
+			<birth>1983-03-12</birth>
+		</student>
+	</students>
+</class>

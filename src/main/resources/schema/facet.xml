@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<person xmlns="http://www.example.org/facet"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.example.org/facet http://www.example.org/facet"
+	gender="male">
+	<name>Your Name</name>
+	<age>56</age>
+	<email>your.name@example.com.cn</email>
+</person>

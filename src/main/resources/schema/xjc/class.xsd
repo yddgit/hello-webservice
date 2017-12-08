@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.example.org/class"
+	xmlns:tns="http://www.example.org/class"
+	elementFormDefault="qualified">
+
+	<xs:include schemaLocation="student.xsd"/>
+
+	<xs:element name="class" type="tns:classType"/>
+
+	<xs:complexType name="classType">
+		<xs:sequence>
+			<xs:element name="grade" type="tns:gradeType"/>
+			<xs:element name="name" type="xs:string"/>
+			<!-- 使用complexType定义student会在生成的class类里产生一个student内部类 -->
+			<!--
+			<xs:element name="students">
+				<xs:complexType>
+					<xs:sequence minOccurs="1" maxOccurs="unbounded">
+						<xs:element name="student" type="tns:studentType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			-->
+			<xs:sequence minOccurs="1" maxOccurs="unbounded">
+				<xs:element ref="tns:student"/>
+			</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="gradeType">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="2000"/>
+			<xs:maxInclusive value="3000"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

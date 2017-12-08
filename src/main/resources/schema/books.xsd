@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.example.org/books"
+	xmlns:tns="http://www.example.org/books"
+	elementFormDefault="qualified">
+
+	<element name="books">
+		<complexType>
+			<!-- minOccurs最少出现次数(默认1) -->
+			<!-- maxOccurs最多出现次数(默认1) -->
+			<sequence minOccurs="0" maxOccurs="unbounded">
+				<element name="book">
+					<complexType>
+						<sequence minOccurs="1" maxOccurs="1">
+							<element name="title" type="string"/>
+							<element name="content" type="string"/>
+							<choice>
+								<element name="author" type="string"/>
+								<element name="authors">
+									<complexType>
+										<sequence minOccurs="2" maxOccurs="5">
+											<element name="author" type="string"/>
+										</sequence>
+									</complexType>
+								</element>
+							</choice>
+						</sequence>
+						<attribute name="id" type="int" use="required"/>
+					</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+
+</schema>

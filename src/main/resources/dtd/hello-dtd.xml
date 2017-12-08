@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DTD Definition -->
+<!--
+
+DTD（文档类型定义）的作用是定义 XML 文档的合法构建模块。
+它使用一系列的合法元素来定义文档结构
+
+DTD教程: http://w3school.com.cn/dtd/index.asp
+
+- 常用控制符:
+  1. ?表示0次或1次
+  2. *表示0次或多次
+  3. +表示1次或者多次
+  4. 默认表示1次
+
+- 属性类型:
+  1. CDATA 值为字符数据
+  2. (en1|en2|...) 此值是枚举列表中的一个值
+  3. ID 值为唯一的id
+  4. IDREF 值为另外一个元素的id
+  5. IDREFS 值为其他id的列表
+  6. NMTOKEN 值为合法的XML名称
+  7. NMTOKENS 值为合法的XML名称列表
+  8. ENTITY 值是一个实体
+  9. ENTITIES 值是一个实体列表
+  10.NOTATION 此值是符号的名称
+  11.xml: 值是一个预定义的XML值
+
+- 默认值:
+  1. 值 属性的默认值
+  2. #REQUIRED 属性值是必须的
+  3. #IMPLIED 属性不是必须的
+  4. #FIXED value 属性值是固定的
+
+-->
+<!DOCTYPE persons [
+	<!ELEMENT persons (person+)>
+	<!-- 逗号表示标签按顺序出现 -->
+	<!ELEMENT person (name, password*, birth?)>
+	<!-- 元素名称 属性名称 属性类型 默认值 -->
+	<!ATTLIST person id ID #REQUIRED>
+	<!ATTLIST person gender CDATA #REQUIRED>
+	<!ELEMENT name (#PCDATA)>
+	<!ELEMENT password (#PCDATA)>
+	<!ELEMENT birth (#PCDATA)>
+]>
+<!-- XML Content -->
+<persons>
+	<person id="p1" gender="male">
+		<name>Jerry</name>
+		<password>123456</password>
+		<birth>1973-12-16</birth>
+	</person>
+	<person id="p2" gender="female">
+		<name>Lucy</name>
+		<password>123456</password>
+		<birth>1976-12-16</birth>
+	</person>
+</persons>

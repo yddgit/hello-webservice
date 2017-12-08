@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT persons (person+)>
+<!ELEMENT person (gender, name, birth, messages+)>
+<!ATTLIST person id ID #REQUIRED>
+<!ELEMENT gender (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT birth (#PCDATA)>
+<!ELEMENT messages (message+)>
+<!ELEMENT message (title, content)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT content (#PCDATA)>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="http://www.example.org/myService/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	name="MyServiceImpl" targetNamespace="http://www.example.org/myService/">
+
+	<!-- 类型定义 -->
+	<wsdl:types>
+		<xsd:schema targetNamespace="http://www.example.org/myService/">
+
+			<!-- times方法请求参数 -->
+			<xsd:element name="times" type="tns:times"/>
+			<!-- times方法返回参数 -->
+			<xsd:element name="timesResponse" type="tns:timesResponse"/>
+			<!-- divide方法请求参数 -->
+			<xsd:element name="divide" type="tns:divide"/>
+			<!-- divide方法返回参数 -->
+			<xsd:element name="divideResponse" type="tns:divideResponse"/>
+			<!-- license信息 -->
+			<xsd:element name="license" type="xsd:string"/>
+
+			<!-- 对应的类型定义 -->
+			<xsd:complexType name="times">
+				<xsd:sequence>
+					<xsd:element name="num1" type="xsd:int"/>
+					<xsd:element name="num2" type="xsd:int"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="timesResponse">
+				<xsd:sequence>
+					<xsd:element name="timesResult" type="xsd:int"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="divide">
+				<xsd:sequence>
+					<xsd:element name="num1" type="xsd:int"/>
+					<xsd:element name="num2" type="xsd:int"/>
+				</xsd:sequence>
+			</xsd:complexType>
+			<xsd:complexType name="divideResponse">
+				<xsd:sequence>
+					<xsd:element name="divideResult" type="xsd:int"/>
+				</xsd:sequence>
+			</xsd:complexType>
+		</xsd:schema>
+	</wsdl:types>
+
+	<!-- Message定义 -->
+	<!-- times方法请求消息 -->
+	<wsdl:message name="times">
+		<wsdl:part element="tns:times" name="times" />
+	</wsdl:message>
+	<!-- times方法响应消息 -->
+	<wsdl:message name="timesResponse">
+		<wsdl:part element="tns:timesResponse" name="timesResponse" />
+	</wsdl:message>
+	<!-- divide方法请求消息 -->
+	<wsdl:message name="divide">
+		<wsdl:part element="tns:divide" name="divide" />
+	</wsdl:message>
+	<!-- divide方法响应消息 -->
+	<wsdl:message name="divideResponse">
+		<wsdl:part element="tns:divideResponse" name="divideResponse" />
+	</wsdl:message>
+	<!-- 定义license消息 -->
+	<wsdl:message name="license" >
+		<wsdl:part element="tns:license" name="license"/>
+	</wsdl:message>
+
+	<!-- Port定义接口方法 -->
+	<wsdl:portType name="IMyService">
+		<!-- times方法 -->
+		<wsdl:operation name="times">
+			<wsdl:input message="tns:times" />
+			<wsdl:output message="tns:timesResponse" />
+		</wsdl:operation>
+		<!-- divide方法 -->
+		<wsdl:operation name="divide">
+			<wsdl:input message="tns:divide" />
+			<wsdl:output message="tns:divideResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+
+	<!-- Binding编码方式 -->
+	<wsdl:binding name="MyServiceSOAP" type="tns:IMyService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="times">
+			<soap:operation soapAction="http://www.example.org/myService/times" />
+			<wsdl:input>
+				<soap:header use="literal" part="license" message="tns:license"/>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="divide">
+			<soap:operation soapAction="http://www.example.org/myService/divide" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+
+	<!-- 定义接口服务, service的name属性需要与根结点的name属性值相同 -->
+	<wsdl:service name="MyServiceImpl">
+		<wsdl:port binding="tns:MyServiceSOAP" name="MyServiceImplPort">
+			<soap:address location="http://localhost:9000/myService" />
+		</wsdl:port>
+	</wsdl:service>
+
+</wsdl:definitions>
